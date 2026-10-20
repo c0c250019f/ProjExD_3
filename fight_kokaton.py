@@ -172,7 +172,9 @@ class Score:
 
 
 class Explosion:
-    """2枚の画像を切り替え、一定フレームで消える爆発。"""
+    """
+    2枚の画像を切り替え、一定フレームで消える爆発。
+    """
 
     def __init__(self, bomb: Bomb, life: int = 30):
         img_nomal = pg.image.load("fig/explosion.gif")
