@@ -142,6 +142,24 @@ class Bomb:
         screen.blit(self.img, self.rct)
 
 
+class Score:
+    """
+    スコアに関するクラス
+    """
+    def __init__(self):
+        self.score = 0
+        self.font = pg.font.Font(None, 50)
+        self.color = (0, 0, 255)
+        self.value = 0
+        self.img = self.font.render(f"Score: {self.value}", True, self.color)
+        self.rct = self.img.get_rect(center=(100, HEIGHT - 50))
+
+    def update(self, screen: pg.Surface):
+        self.img = self.font.render(f"Score: {self.value}", True, self.color)
+        self.rct = self.img.get_rect(center=(100, HEIGHT - 50))
+        screen.blit(self.img, self.rct)
+
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -151,6 +169,7 @@ def main():
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
     beam = None  # ゲーム初期化時にはビームは存在しない
     clock = pg.time.Clock()
+    score = Score()
     tmr = 0
     while True:
         for event in pg.event.get():
@@ -177,11 +196,14 @@ def main():
                 if beam.rct.colliderect(bomb.rct): 
                     beam = None
                     bombs[i] = None
+                    score.update(screen)
                     bird.change_img(9, screen)
                     pg.display.update()
+                    score.value += 1
 
         bombs = [bomb for bomb in bombs if bomb is not None]
 
+        score.update(screen)
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
         if beam is not None:
